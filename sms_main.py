@@ -197,29 +197,28 @@ def ruanmei(jiekou):
 
 # 主函数
 def run(jiekou_list):
-    while True:
-        for jiekou in jiekou_list:
-            special = jiekou.get("special")
-            if special:
-                # 判断是否为特殊请求
-                caseSpecial(jiekou, special)
-            else:
-                headers = {
-                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 12_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16B92 Html5Plus/1.0',
-                    'accept-encoding': 'gzip, deflate, br',
-                    'accept-language': 'zh-CN,zh-TW;q=0.8,zh;q=0.6,en;q=0.4,ja;q=0.2',
-                    'cache-control': 'max-age=0',
-                    "X-Requested-With": "XMLHttpRequest",
-                    'cookie': jiekou.get("cookie", ""),
-                    "referer": jiekou.get("referer", ""),
-                }
-                if jiekou.get("headers"):
-                    headers = jiekou.get("headers")
+    for jiekou in jiekou_list:
+        special = jiekou.get("special")
+        if special:
+            # 判断是否为特殊请求
+            caseSpecial(jiekou, special)
+        else:
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 12_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16B92 Html5Plus/1.0',
+                'accept-encoding': 'gzip, deflate, br',
+                'accept-language': 'zh-CN,zh-TW;q=0.8,zh;q=0.6,en;q=0.4,ja;q=0.2',
+                'cache-control': 'max-age=0',
+                "X-Requested-With": "XMLHttpRequest",
+                'cookie': jiekou.get("cookie", ""),
+                "referer": jiekou.get("referer", ""),
+            }
+            if jiekou.get("headers"):
+                headers = jiekou.get("headers")
 
-                # 默认处理方法
-                default(jiekou, headers)
+            # 默认处理方法
+            default(jiekou, headers)
 
 
 if __name__ == '__main__':
-    target_list = replacePhone("手机号码")
+    target_list = replacePhone("13076588854")
     run(target_list)
