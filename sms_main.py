@@ -220,5 +220,6 @@ def run(jiekou_list):
 
 
 if __name__ == '__main__':
-    target_list = replacePhone("填写你的手机号")
+    phone = input("输入手机号: ")
+    target_list = replacePhone(phone)
     run(target_list)
