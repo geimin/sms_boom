@@ -5,22 +5,16 @@ import time
 
 import requests
 
-# region 数据准备
-
-# 短信接口列表
 api_list = [
-    # 0 有讲
     {
         "url": "https://www.yojiang.cn/api/user/send_verify_code?phone=target_Phone",
         "type": "GET",
         "cookie": "guest_uuid=5e3626fd9b6dde14e9293bee; _xsrf=2|a63a71a2|6bfa82e8f3ff66bbf83b67c2a67a9cf5|1580823294; Hm_lvt_91f2894c14ed1eb5a6016e859758fb9c=1580825404; Hm_lpvt_91f2894c14ed1eb5a6016e859758fb9c=1580825404"
     },
-    # 1 平安
     {
         "url": "https://m.health.pingan.com/mapi/smsCode.json?deviceId=5a4c935cbb6ff6ca&deviceType=SM-G9300&timestamp=1545122608&app=0&platform=3&app_key=PAHealth&osversion=23&info=&version=1.0.1&resolution=1440x2560&screenSize=22&netType=1&channel=m_h5&phone=target_Phone",
         "type": "GET"
     },
-    # 2 智课
     {
         "url": "https://www.smartstudy.com/api/user-service/captcha/phone",
         "parm": {
@@ -30,12 +24,10 @@ api_list = [
         },
         "type": "POST"
     },
-    # 3 腾讯企业邮
     {
         "url": "https://exmail.qq.com/cgi-bin/bizmail_portal?action=send_sms&type=11&t=biz_rf_portal_mgr&ef=jsnew&resp_charset=UTF8&area=86&mobile=target_Phone",
         "type": "GET",
     },
-    # 4 快手
     {
         "url": "https://id.kuaishou.com/pass/kuaishou/sms/requestMobileCode",
         "type": "POST",
@@ -46,20 +38,16 @@ api_list = [
             "phone": "target_Phone"
         }
     },
-    # 5 金融好 成功但未收到短信
     {
         "url": "http://jrh.financeun.com/Login/sendMessageCode3.html?mobile=target_Phone&mbid=197873&check=3",
         "type": "GET",
         "cookie": "PHPSESSID=q8h78o91qm30m5bl7lufkt3go3; jrh_visit_log=q8h78o91qm30m5bl7lufkt3go3; Hm_lvt_b627bb080fd97f01181b26820034cfcb=1580999339; UM_distinctid=1701ae772688ac-09ae1bde44e676-6701b35-144000-1701ae772699ca; CNZZDATA1276814029=219078261-1580999135-%7C1580999135; Hm_lpvt_b627bb080fd97f01181b26820034cfcb=1580999403"
     },
-    # 6 爱思
     {
         "url": "https://developer.i4.cn/put/getMsgCode.xhtml?_=1580912157461&phoneNumber=target_Phone&codeType=6",
         "type": "GET"
     },
-    # 7 潇湘书院 3次/天
     {
-        # 特殊请求 需要页面的token
         "special": "xxsy",
         "first": {
             "url": "https://www.xxsy.net/Reg",
@@ -79,7 +67,6 @@ api_list = [
             "X-Requested-With": "XMLHttpRequest"
         }
     },
-    # 8 软媒 第二次会有验证码限制
     {
         "special": "ruanmei",
         "first": {
@@ -102,7 +89,6 @@ api_list = [
             "data": ""
         }
     },
-    # 9 天津企业登记
     {
         "url": "http://qydj.scjg.tj.gov.cn/reportOnlineService/login_login",
         "type": "POST",
@@ -115,9 +101,7 @@ api_list = [
 ]
 
 
-# 替换号码
 def replacePhone(phone):
-    # 替换号码后的列表
     target_list = []
     for api in api_list:
         api_str = json.dumps(api)
@@ -126,11 +110,6 @@ def replacePhone(phone):
     return target_list
 
 
-# endregion
-
-
-# region 处理方法
-# 默认处理方法
 def default(jiekou, headers):
     resp = requests.request(
         url=jiekou["url"],
@@ -144,7 +123,6 @@ def default(jiekou, headers):
     print()
 
 
-# 特殊请求处理分支
 def caseSpecial(jiekou, special):
     if special == 'xxsy':
         xxsy(jiekou)
@@ -152,13 +130,11 @@ def caseSpecial(jiekou, special):
         ruanmei(jiekou)
 
 
-# 潇湘书院
 def xxsy(jiekou):
     # 获取token
     resp = requests.request(url=jiekou["first"]["url"], method=jiekou["first"]["type"], headers=jiekou["headers"])
     jiekou["parm"]["token"] = re.findall(", checkCode, '(.*?)',", resp.text)[0]
 
-    # 发送短信
     resp = requests.request(
         url=jiekou["url"],
         method=jiekou["type"],
@@ -172,7 +148,6 @@ def xxsy(jiekou):
     print()
 
 
-# 软媒
 def ruanmei(jiekou):
     # 获取token
     resp = requests.request(url=jiekou["first"]["url"], method=jiekou["first"]["type"], headers=jiekou["headers"])
