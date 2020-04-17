@@ -14,7 +14,6 @@
 
 # 捐助
 <img src="img/pay.jpg" width="200px" height="300px">
-<img src="img/pay2.jpg" width="200px" height="300px">
 
 # 其他
 Pornhub视频下载器: https://github.com/xilidexiao/pornhub

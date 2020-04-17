@@ -175,7 +175,6 @@ def run(jiekou_list):
     for jiekou in jiekou_list:
         special = jiekou.get("special")
         if special:
-            # 判断是否为特殊请求
             caseSpecial(jiekou, special)
         else:
             headers = {
@@ -189,8 +188,6 @@ def run(jiekou_list):
             }
             if jiekou.get("headers"):
                 headers = jiekou.get("headers")
-
-            # 默认处理方法
             default(jiekou, headers)
 
 
