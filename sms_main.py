@@ -168,9 +168,6 @@ def ruanmei(jiekou):
     print()
 
 
-# endregion
-
-# 主函数
 def run(jiekou_list):
     for jiekou in jiekou_list:
         special = jiekou.get("special")
